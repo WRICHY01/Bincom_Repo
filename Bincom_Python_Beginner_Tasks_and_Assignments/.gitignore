@@ -1,7 +1,10 @@
 .bpbta_venv/
+*.env
+replacements.txt
 csa_4/linear_regression_analysis.py
 csa_5/wrichmedia/images
 csa_5/wrichmedia/media/
+csa_5/wrichmedia/wrichmedia/django_secret_key_generator.py
 *__pycache__/
 *.pycgrid
 *.sqlite3
