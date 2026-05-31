@@ -1,0 +1,10 @@
+.bpbta_venv/
+csa_4/linear_regression_analysis.py
+csa_5/wrichmedia/images
+csa_5/wrichmedia/media/
+*__pycache__/
+*.pycgrid
+*.sqlite3
+assignment1.py
+tst0.py
+tst1.py
