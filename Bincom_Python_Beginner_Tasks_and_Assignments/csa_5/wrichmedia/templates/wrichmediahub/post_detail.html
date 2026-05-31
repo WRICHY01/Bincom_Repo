@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ post.title }} — Prism{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+
+        <div class="mb-3">
+            <a href="{% url 'home' %}" class="text-decoration-none">
+                ← Back to Home
+            </a>
+        </div>
+
+        <h1 class="fw-bold">{{ post.title }}</h1>
+        <p class="text-muted">
+            By {{ post.author.username }} •
+            {{ post.date_uploaded|date:"F d, Y" }}
+        </p>
+
+        {% if post.description %}
+            <p class="lead">{{ post.description }}</p>
+        {% endif %}
+
+        <hr>
+
+        <!-- Render each media item -->
+        {% for item in media_items %}
+        <div class="mb-4">
+
+            {% if item.media_type == 'text' %}
+                <div class="p-3 bg-light rounded">
+                    {{ item.text_content|linebreaks }}
+                </div>
+
+            {% elif item.media_type == 'image' and item.image_file %}
+                <img src="{{ item.image_file.url }}"
+                     class="img-fluid rounded shadow-sm"
+                     alt="Image">
+
+            {% elif item.media_type == 'audio' and item.audio_file %}
+                <div class="p-3 bg-light rounded">
+                    <p class="fw-semibold mb-2">🎵 Audio</p>
+                    <audio controls class="w-100">
+                        <source src="{{ item.audio_file.url }}">
+                        Your browser does not support audio playback.
+                    </audio>
+                </div>
+
+            {% elif item.media_type == 'video' and item.video_file %}
+                <video controls class="w-100 rounded shadow-sm">
+                    <source src="{{ item.video_file.url }}">
+                    Your browser does not support video playback.
+                </video>
+
+            {% endif %}
+
+        </div>
+        {% endfor %}
+
+        {% if request.user == post.author %}
+        <hr>
+        <form method="POST" action="{% url 'delete_post' post.pk %}">
+            {% csrf_token %}
+            <button type="submit"
+                    class="btn btn-danger"
+                    onclick="return confirm('Are you sure?')">
+                Delete This Post
+            </button>
+        </form>
+        {% endif %}
+
+    </div>
+</div>
+{% endblock %}

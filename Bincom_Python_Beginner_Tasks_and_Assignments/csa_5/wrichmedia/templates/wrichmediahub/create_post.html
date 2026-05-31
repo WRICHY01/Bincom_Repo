@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+
+{% block title %}Create Post — Prism{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <h2 class="fw-bold mb-4">Create New Post</h2>
+
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <!-- Post details -->
+            <div class="card mb-4 shadow-sm">
+                <div class="card-header fw-semibold">Post Details</div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Title</label>
+                        {{ post_form.title }}
+                        {% if post_form.title.errors %}
+                            <div class="text-danger small mt-1">
+                                {{ post_form.title.errors }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">
+                            Description (optional)
+                        </label>
+                        {{ post_form.description }}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Media items formset -->
+            <div class="card mb-4 shadow-sm">
+                <div class="card-header fw-semibold">Media Items</div>
+                <div class="card-body">
+
+                    {{ formset.management_form }}
+
+                    <div id="formset-container">
+                        {% for form in formset %}
+                        <div class="media-form border rounded p-3 mb-3">
+                            <div class="mb-2">
+                                <label class="form-label fw-semibold">
+                                    Media Type
+                                </label>
+                                {{ form.media_type }}
+                            </div>
+                            <div class="mb-2 text-field-wrap">
+                                <label class="form-label">Text Content</label>
+                                {{ form.text_content }}
+                            </div>
+                            <div class="mb-2 image-field-wrap">
+                                <label class="form-label">Image File</label>
+                                {{ form.image_file }}
+                            </div>
+                            <div class="mb-2 audio-field-wrap">
+                                <label class="form-label">Audio File</label>
+                                {{ form.audio_file }}
+                            </div>
+                            <div class="mb-2 video-field-wrap">
+                                <label class="form-label">Video File</label>
+                                {{ form.video_file }}
+                            </div>
+                            {% if form.instance.pk %}
+                                <div class="form-check">
+                                    {{ form.DELETE }}
+                                    <label class="form-check-label text-danger">
+                                        Remove this item
+                                    </label>
+                                </div>
+                            {% endif %}
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary px-4">
+                Publish Post
+            </button>
+            <a href="{% url 'home' %}" class="btn btn-outline-secondary ms-2">
+                Cancel
+            </a>
+
+        </form>
+    </div>
+</div>
+{% endblock %}
